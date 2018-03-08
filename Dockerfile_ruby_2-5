@@ -1,0 +1,8 @@
+FROM ubuntu:16.04
+
+RUN apt-get update
+RUN apt-get install build-essential wget vim ruby-full -y
+
+# BUILD AND RUN
+# docker build -t "ubuntu:ruby25" -f Dockerfile_ruby_2-5 .
+# docker run -t -d ubuntu:ruby25
