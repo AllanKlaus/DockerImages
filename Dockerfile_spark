@@ -6,7 +6,7 @@ RUN apt-get update && \
 
 RUN apt-get update && \
   apt-get install -y \
-   git default-jdk scala
+   git default-jdk scala python
 
 # DOWNLOAD SPARK - https://spark.apache.org/downloads.html
 RUN wget http://ftp.unicamp.br/pub/apache/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
