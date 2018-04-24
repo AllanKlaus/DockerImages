@@ -15,5 +15,5 @@ RUN tar -xvzf spark-2.3.0-bin-hadoop2.7.tgz
 RUN cd spark-2.3.0-bin-hadoop2.7/bin && ./spark-shell
 
 # BUILD AND RUN
-# docker build -t "ubuntu:spark" -f Dockerfile_spark .
+# docker build -t "ubuntu:spark" -f ./machine-learning/spark/Dockerfile .
 # docker run -t -d ubuntu:spark

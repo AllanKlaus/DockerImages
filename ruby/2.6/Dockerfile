@@ -9,5 +9,5 @@ RUN tar xzf ruby-2.6.0-preview1.tar.gz
 RUN cd ruby-2.6.0-preview1 && ./configure && make && make install
 
 # BUILD AND RUN
-# docker build -t "ubuntu:ruby26" -f Dockerfile_ruby_2-6 .
+# docker build -t "ubuntu:ruby26" -f ./ruby/2.6/Dockerfile .
 # docker run -t -d ubuntu:ruby26
