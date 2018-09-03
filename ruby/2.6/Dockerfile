@@ -12,5 +12,5 @@ RUN cd ruby-2.6.0-preview2 && ./configure && make && make install
 # COPY ./tests.rb ./tests.rb
 
 # BUILD AND RUN
-# docker build -t "ubuntu:ruby26" -f ./ruby/2.6/Dockerfile .
-# docker run -t -d ubuntu:ruby26
+# docker build -t "ruby2_6:test" -f ./ruby/2.6/Dockerfile .
+# docker run -td ruby2_6:test
