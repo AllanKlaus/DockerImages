@@ -58,6 +58,8 @@ ENV SPARK_OPTS --driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M -
 USER $NB_UID
 
 # Install pyarrow
+# RUN pip install conda
+RUN conda install --quiet -y 'pyarrow'
 RUN conda install --quiet -y 'pyarrow' && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR && \
@@ -68,6 +70,8 @@ fix-permissions /home/$NB_USER
 ENV JULIA_PKGDIR=/opt/julia
 ENV JULIA_VERSION=0.6.2
 
+USER root
+
 RUN mkdir /opt/julia-${JULIA_VERSION} && \
     cd /tmp && \
     wget -q https://julialang-s3.julialang.org/bin/linux/x64/`echo ${JULIA_VERSION} | cut -d. -f 1,2`/julia-${JULIA_VERSION}-linux-x86_64.tar.gz && \
@@ -76,7 +80,7 @@ RUN mkdir /opt/julia-${JULIA_VERSION} && \
     rm /tmp/julia-${JULIA_VERSION}-linux-x86_64.tar.gz
 RUN ln -fs /opt/julia-*/bin/julia /usr/local/bin/julia
 
-# Show Julia where conda libraries are \
+# # Show Julia where conda libraries are \
 RUN mkdir /etc/julia && \
     echo "push!(Libdl.DL_LOAD_PATH, \"$CONDA_DIR/lib\")" >> /etc/julia/juliarc.jl && \
     # Create JULIA_PKGDIR \
@@ -133,5 +137,5 @@ RUN julia -e 'Pkg.init()' && \
     rm -rf $HOME/.local && \
     fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter
 
-# docker build -t "ubuntu:jupyter" -f ./machine-learning/jupyter_with_spark/Dockerfile .
+# docker build -t "allanklaus_dev:spark" -f ./machine-learning/jupyter_with_spark/Dockerfile .
 # docker run -td -p 8888:8888 ubuntu:jupyter start-notebook.sh --NotebookApp.token=''
