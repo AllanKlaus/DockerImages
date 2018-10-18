@@ -137,5 +137,9 @@ RUN julia -e 'Pkg.init()' && \
     rm -rf $HOME/.local && \
     fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter
 
-# docker build -t "allanklaus_dev:spark" -f ./machine-learning/jupyter_with_spark/Dockerfile .
+RUN pip install wheel
+RUN pip install pandas
+RUN pip install nltk
+
+# docker build -t "ubuntu:jupyter" -f ./machine-learning/jupyter_with_spark/Dockerfile .
 # docker run -td -p 8888:8888 ubuntu:jupyter start-notebook.sh --NotebookApp.token=''
