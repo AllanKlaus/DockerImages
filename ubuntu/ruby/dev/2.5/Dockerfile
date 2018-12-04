@@ -68,10 +68,14 @@ RUN /usr/sbin/locale-gen
 ENV LANG en_US.UTF-8
 
 # INSTALL RUBY
-RUN wget https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.1.tar.gz
-RUN tar xzf ruby-2.5.1.tar.gz
+RUN wget https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.3.tar.gz
+RUN tar xzf ruby-2.5.3.tar.gz
 
-RUN cd ruby-2.5.1 && ./configure && make && make install
+RUN cd ruby-2.5.3 && ./configure && make && make install
+
+RUN gem install bundle --no-ri --no-rdoc
+RUN gem install pkg-config
+RUN gem install nokogiri --pre
 
 # docker build -t "allanklaus:ruby2_5" -f ./ubuntu/ruby/2.5/Dockerfile .
 # docker run -td allanklaus:ruby2_5
