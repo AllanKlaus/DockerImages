@@ -6,7 +6,10 @@ RUN apt-get update && \
     wget \
     vim \
     curl \
-    gnupg && \
+    gnupg \
+    libssl-dev \
+    libxslt-dev \
+    zlib1g && \
   rm -rf /var/lib/apt/lists/*
 
 RUN wget https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
