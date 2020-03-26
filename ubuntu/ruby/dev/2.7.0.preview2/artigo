@@ -1,0 +1,119 @@
+Seguindo aquela linha de sair release do Ruby trazer os updates, trago hoje três novos updates que sairam na release 2.7.0-preview2.
+Nosso presente de natal da comunidade Ruby veio com força total, como sempre trago os updates pra vocês do que está vindo, vou três hoje três novidades do release final do Ruby 2.7.
+
+// Mudanças nas assinaturas dos métodos com positional and keyword arguments
+
+Hoje quando criamos um métodos temos basicamente quatro tipos de assinaturas possíveis.
+1. Não passar parametros.
+2. Passar parametros posicionais.
+3. Passar parametros com palavras chaves.
+4. Passar parametros como array.
+
+Teriamos uma quinta, ou sexta forma se você pensar que podemos começar a misturar as formas anteriores, mas basicamente essas são as formas básicas de passar parametros.
+No caso vamos tomar os seguintes exemplos...
+
+```ruby
+def method_with_key_argument(key: 42)
+end
+
+def method_with_array_argument(**kw)
+end
+
+end method_with_posicional_and_key_argument(h={}, key: 42)
+end
+```
+
+Nesses casos podemos chamar os metodos das seguintes maneiras hoje...
+
+```ruby
+method_with_key_argument({key: 42}) # usando {}
+
+method_with_key_argument(key: 42) # omitindo {}
+
+method_with_array_argument({key: 42})
+
+method_with_posicional_and_key_argument("key" => 43, key: 42) # passando tudo como argumentos posicionais
+
+method_with_posicional_and_key_argument({"key" => 43, key: 42}) # passando tudo como se fosse um único hash
+```
+
+Todos esses exemplos acima funcionam sem nenhum problema na versão atual e funcionarão na versão 2.7, porém iremos ter um warning.
+Isso porque essa conversão automática vai ser removida do Ruby 3. Dessa forma para retirar os alertas e deixar seu código safe para o Ruby 3, você terá que chamar os métodos assim...
+
+```ruby
+method_with_key_argument(**{key: 42})
+
+method_with_array_argument(**{key: 42})
+
+method_with_posicional_and_key_argument({"key" => 43}, key: 42)
+```
+
+Essas mudanças na assinatura dos metodos são um preparo para a versão 3.0 que vai está prevista pra sair ano que vem. No Ruby 3.0 os Keywords Arguments vão ser separados dos posicional, como essa mudança já está prevista a adaptação já veio no Ruby 2.7 com um warming avisando que vai parar de funcionar para que possamos já adaptar nossas aplicações.
+
+Se você quiser continuar usando Keywords arguments nas novas versões você terá que explicitar o keyword arguments na assinatura do método. Assim...
+
+```ruby
+def explicity_keywords(**keywords_args)
+end
+```
+
+O mais legal dessa mudança é que ela já trás algo novo, se você está começando uma aplicação do zero vocÊ pode usar a nova sintaxe que é a seguintes
+
+```ruby
+def explicity_keywords(...)
+end
+```
+
+Você também pode usar a versão antiga dos keywords usando o método `Module#ruby2_keywords`, desta maneira...
+
+```ruby
+ruby2_keywords def method_with_key_argument(*args)
+end
+```
+
+
+// Operador de referência
+
+Esse operador de referência é muito legal por dois pontos:
+1. Meu amigo Américo sugeriu a [mudança há dois anos](https://bugs.ruby-lang.org/issues/13581) na época que estavamos trabalhando juntos.
+2. Tende a nos deixar mais produtivos e eu particularmente gosto de escrever menos.
+
+De olho no código basicamente hoje para chamarmos um metodo de um módulo de forma mais direta. Podemos pegar o seguinte exemplo, você quer descobrir a raiz de uma lista de números...
+
+```ruby
+roots = [1, 4, 9].map &Math.method(:sqrt)
+```
+
+Como o novo operador `.:` você poderá pegar a mesma lista da seguinte maneira...
+
+```ruby
+roots = [1, 4, 9].map(&Math.:sqrt)
+```
+
+Muito mais simples e rápido você substitui o `method` e seus `()` por  um simples `:`. 
+
+// Chamar metodo privado no `self` agora é permitido
+
+Quem já trabalhou com Java, usou seus getters e setters nos seus atributos privados vai entender perceber que esse comportamento não tinha o menor sentido.
+O comportamento é o seguinte se você pode alterar um atributo privado normalmente, porém não pode retornar ele na função como no exemplo abaixo...
+
+```ruby
+class MyClass
+  def my_method
+    self.my_attribute = 123 # allowed
+    self.my_attribute # raises
+  end
+
+  private
+
+  attr_accessor :my_attribute
+end
+
+MyClass.new.my_method
+# => NoMethodError (private method `my_attribute' called for #<MyClass:0x0000560957b10038 @my_attribute=123>)
+```
+
+No exemplo ao chamar o metodo que altera e retorna o atributo privado podemos perceber que ele altera o atributo porém da erro ao retornar justamente porque o atributo é privado.
+Esse comportamento foi alterado no ruby 2.7, agora você pode retornar seu atributo privado em uma função e não dará erro.
+
+Quer ver outras novidades do Ruby 2.7, clique aqui. O que achou das alterações? Gostou, ficou com alguma dúvida? Quer sugerir algo? Deixe nos comentários.
