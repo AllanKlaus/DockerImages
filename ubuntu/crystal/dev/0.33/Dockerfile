@@ -52,16 +52,9 @@ RUN apt-get update -qq && \
 		yarn && \
 	rm -rf /var/lib/apt/lists/*
 
-WORKDIR /opt/amber
-
-# Build Amber
-ENV PATH /opt/amber/bin:$PATH
-COPY . /opt/amber
-RUN shards build amber
-
 # RUN CRYSTAL
 CMD ["crystal", "spec"]
 
 # BUILD AND RUN
-# docker build -t "allanklaus:crystal" -f ./ubuntu/crystal/Dockerfile .
+# docker build -t "allanklaus:crystal" -f ./ubuntu/crystal/dev/0.33/Dockerfile .
 # docker run -td -P allanklaus:crystal
